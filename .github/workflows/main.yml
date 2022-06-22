@@ -24,6 +24,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - uses: webfactory/ssh-agent@v0.5.4
+           with: ssh-private-key:  ${{ secrets.SSH_KEY_PEM }}
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -35,6 +37,6 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project,
           ls -la
-          ssh azureuser@20.231.36.179 -i ${secrets.SSH_KEY_PEM}
+          ssh azureuser@20.231.36.179 -i ${ssh-private-key}
           wget http://localhost
 
