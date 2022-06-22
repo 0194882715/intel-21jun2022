@@ -33,6 +33,8 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project,
-          ls -la
-          echo ${{ secrets.SSH_KEY_PEM }}
+          ls -la,
+          echo ${{ secrets.SSH_KEY_PEM }},
+          ssh azureuser@20.231.36.179 -i ${{ secrets.SSH_KEY_PEM }},
+          wget http://localhost
 
