@@ -33,6 +33,18 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET}}
       
+      - name: deploy files to Azure server
+        uses: ilCollez/ssh-scp-deploy@main
+        with:
+          host: ${{ secrets.REMOTE_HOST }} # "example.com"
+          #port: ${{ secrets.SSH_PORT }} # 22
+          username: ${{ secrets.REMOTE_USER }} # "user"
+          key: ${{ secrets.SERVER_SSH_KEY }} # "~/.ssh/id_rsa", can also be the key itself
+          #passphrase: ${{ secrets.SSH_PASSPHRASE }} # "passphrase"
+          files: |
+            *.html
+          remote-path: ${{ secrets.REMOTE_TARGET}}
+
       - name: move file to 
         uses: appleboy/ssh-action@master
         with:
@@ -44,16 +56,4 @@ jobs:
             whoami
             ls -al
             pwd
-            sudo mv mysite.html /var/www/html/
-
-      - name: deploy files to Azure server
-        uses: ilCollez/ssh-scp-deploy@main
-        with:
-          host: ${{ secrets.REMOTE_HOST }} # "example.com"
-          #port: ${{ secrets.SSH_PORT }} # 22
-          username: ${{ secrets.REMOTE_USER }} # "user"
-          key: ${{ secrets.SERVER_SSH_KEY }} # "~/.ssh/id_rsa", can also be the key itself
-          #passphrase: ${{ secrets.SSH_PASSPHRASE }} # "passphrase"
-          files: |
-            *.html
-          remote-path: "/var/www/html"
+            sudo mv *.html /var/www/html/
