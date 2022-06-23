@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     environment:
-      name: development
+      name: main
       url: http://20.231.36.179/contact.html
 
     steps:
@@ -39,40 +39,17 @@ jobs:
 
       - name: Verify the Code is Cloned
         run: ls -la
-
-      - name: Copy the Code to the Server
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: "-rltgoDzvO"
-          SOURCE: "mysite.html"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET}}
-      
-      - name: deploy files to Azure server
-        uses: ilCollez/ssh-scp-deploy@main
+      - name: 
+        uses: mdallasanta/ssh-scp-deploy@{version}
         with:
-          host: ${{ secrets.REMOTE_HOST }} # "example.com"
-          #port: ${{ secrets.SSH_PORT }} # 22
-          username: ${{ secrets.REMOTE_USER }} # "user"
-          key: ${{ secrets.SERVER_SSH_KEY }} # "~/.ssh/id_rsa", can also be the key itself
-          #passphrase: ${{ secrets.SSH_PASSPHRASE }} # "passphrase"
-          files: |
-            *.html
-          remote-path: ${{ secrets.REMOTE_TARGET}}
-
-      - name: move file to Axure Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          #port: ${{ secrets.PORT }}
-          script: |
-            ls -al
-            pwd
-            sudo mv *.html /var/www/html/
-            cd /var/www/html/
-            pwd
-            ls -al
+          local: './'                                                  # Local file path - REQUIRED false - DEFAULT ./
+          remote: '~/'                                                 # Remote file path - REQUIRED false - DEFAULT ~/
+          host: ${{secrets.REMOTE_HOST}}                                      # Remote server address - REQUIRED true
+          port: ${{secrets.PORT}}                                      # Remote server port - REQUIRED false - DEFAULT 22
+          user: ${{secrets.REMOTE_USER}}                                      # Remote server user - REQUIRED true
+          #password: ${{secrets.PASSWORD}}                              # User password - REQUIRED at least one of "password" or "key" 
+          key: ${{secrets.SERVER_SSH_KEY}}                                        # Remote server private key - REQUIRED at least one of "password" or "key" 
+          pre_upload: echo "This will be executed before the upload!"  # Command to run via ssh before scp upload - REQUIRED false
+          post_upload: echo "This will be executed after the upload!"  # Command to run via ssh after scp upload - REQUIRED false
+          ssh_options: -o StrictHostKeyChecking=no                     # A set of ssh_option separated by -o - REQUIRED false - DEFAULT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+          scp_options: -v                                              # Flags to use during scp - REQUIRED false - DEFAULT ''
