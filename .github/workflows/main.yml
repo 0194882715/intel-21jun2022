@@ -11,18 +11,27 @@ on:
 
 
 jobs:
-  
-  deployment:
-
+  pre-build:
     runs-on: ubuntu-latest
-
+    environment:
+      name: development
+      url: http://${{ secrets.REMOTE_HOST }}/mysite.html
+      
+  build:
+    runs-on: ubuntu-latest
     steps:
       - name: Clone the Code
         uses: actions/checkout@v3
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
       - name: Verify the Code is Cloned
         run: ls -la
 
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
       - name: Copy the Code to the Server
         uses: easingthemes/ssh-deploy@main
         env:
@@ -53,7 +62,9 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           #port: ${{ secrets.PORT }}
           script: |
-            whoami
             ls -al
             pwd
             sudo mv *.html /var/www/html/
+            cd /var/www/html/
+            pwd
+            ls -al
