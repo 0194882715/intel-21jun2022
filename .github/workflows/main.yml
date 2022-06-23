@@ -13,25 +13,33 @@ on:
 jobs:
   pre-build:
     runs-on: ubuntu-latest
-    environment:
-      name: development
-      url: http://${{ secrets.REMOTE_HOST }}/mysite.html
-      
+    steps : echo "Pre-Build Step"
+
+
   build:
     runs-on: ubuntu-latest
+    steps: echo "Build Step"
+
+
+  test:
+    runs-on: ubuntu-latest
+    steps: echo "test Step"
+
+
+  deployment:
+    runs-on: ubuntu-latest    
+    environment:
+      name: development
+      url: "http://${{ secrets.REMOTE_HOST }}/mysite.html"
+
+
     steps:
       - name: Clone the Code
         uses: actions/checkout@v3
 
-  test:
-    runs-on: ubuntu-latest
-    steps:
       - name: Verify the Code is Cloned
         run: ls -la
 
-  deployment:
-    runs-on: ubuntu-latest
-    steps:
       - name: Copy the Code to the Server
         uses: easingthemes/ssh-deploy@main
         env:
