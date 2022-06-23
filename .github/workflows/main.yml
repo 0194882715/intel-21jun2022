@@ -44,3 +44,4 @@ jobs:
             whoami
             ls -al
             pwd
+            sudo mv mysite.html /var/www/html/
