@@ -80,13 +80,33 @@ jobs:
           pwd
           ls -la
           sed -i 's/REPLACEAPPLICATIONENVIRONMENT/1.0/g' ./myapp/version.html
+          cat myapp/version.html
+
+      - name: Upload the Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: myapp-package
+          path: myapp
   test:
     runs-on: ubuntu-latest
     needs: build  
     steps:
       - name: Test Step
         run: echo "Test Step"
-  
+      
+      - name: Download the myapp-package
+        uses: actions/download-artifact@v3
+        with:
+          name: myapp-package
+          path: myapp
+
+      - name: Verify the downloaded Packages
+        run: |
+          ls -la
+          pwd
+
+      - name: Cat the file and test for replacement.
+        run: cat myapp/version.html
   
   deployment:
     runs-on: ubuntu-latest
@@ -98,6 +118,12 @@ jobs:
     steps:
       - name: Clone the Code
         uses: actions/checkout@v3
+
+      - name: Download the myapp-package
+        uses: actions/download-artifact@v3
+        with:
+          name: myapp-package
+          path: myapp
 
       - name: Verify the Code is Cloned
         run: ls -la
