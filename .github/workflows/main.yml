@@ -21,8 +21,10 @@ jobs:
     steps:
         - name: Clone the code
           uses: actions/checkoutv3
+
         - name: Verify the code is cloned
           run: ls -la
+
         - name: Copy the code to the server
           uses: easingthemes/ssh-deploy@main
           env:
