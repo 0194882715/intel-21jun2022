@@ -11,22 +11,27 @@ on:
 
 
 jobs:
-  pre-build:
-    runs-on: ubuntu-latest
-    steps : echo "Pre-Build Step"
-
   build:
     runs-on: ubuntu-latest
-    steps: echo "Build Step"
+    steps:
+      - name: Build Step
+        run: echo "Build Step"
+
 
   test:
     runs-on: ubuntu-latest
-    steps: echo "test Step"
+    needs: build  
+    steps:
+      - name: Test Step
+        run: echo "Test Step"
+  
+  
   deployment:
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
+    needs: test
     environment:
-      name: main
-      url: "http://20.231.36.179/mysite.html"
+      name: development
+      url: http://20.231.36.179/contact.html
 
     steps:
       - name: Clone the Code
