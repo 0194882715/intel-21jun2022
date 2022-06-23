@@ -33,7 +33,18 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project
+          ls -la
           echo ${{ secrets.SSH_KEY_PEM }}
-          ssh azureuser@20.231.36.179 -i ${{ secrets.SSH_KEY_PEM }}
+          
           wget http://localhost
 
+      # Runs a set of commands using the runners shell
+      - uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY_PEM }}
+      - name: Run a ssh script
+        run: |
+          echo ${{ secrets.SSH_KEY_PEM }}
+          whoami
+          ls -la
+          ssh azureuser@20.231.36.179 -i ${{ secrets.SSH_KEY_PEM }}
