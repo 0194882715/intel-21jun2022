@@ -77,6 +77,8 @@ jobs:
 
       - name: Inject Version Details to the Application
         run: |
+          pwd
+          ls -la
           sed -i 's/REPLACEAPPLICATIONENVIRONMENT/1.0/g' ~/myapp/version.html
   test:
     runs-on: ubuntu-latest
