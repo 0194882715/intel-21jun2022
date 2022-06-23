@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Deploy Static Application to Ubuntu Apache2
 
 # Controls when the workflow will run
 on:
@@ -18,16 +18,16 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
   
-  steps:
-    - name: Clone the code
-      uses: actions/checkoutv3
-    - name: Verify the code is cloned
-      run: ls -la
-    - name: Copy the code to the server
-      uses: easingthemes/ssh-deploy@main
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-        ARGS: "-rltgoDzvO"
-        SOURCE: "dist/"
-        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-        REMOTE_USER: ${{ secrets.REMOTE_USER }}
+    steps:
+        - name: Clone the code
+          uses: actions/checkoutv3
+        - name: Verify the code is cloned
+          run: ls -la
+        - name: Copy the code to the server
+          uses: easingthemes/ssh-deploy@main
+          env:
+            SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+            ARGS: "-rltgoDzvO"
+            SOURCE: "dist/"
+            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+            REMOTE_USER: ${{ secrets.REMOTE_USER }}
