@@ -79,7 +79,7 @@ jobs:
         run: |
           pwd
           ls -la
-          sed -i 's/REPLACEAPPLICATIONENVIRONMENT/1.0/g' ./myapp/version.html
+          sed -i 's/REPLACEAPPLICATIONENVIRONMENT/'$GITHUB_ENV'/g' ./myapp/version.html
           cat myapp/version.html
 
       - name: Upload the Artifact
@@ -110,6 +110,7 @@ jobs:
   
   deployment:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: test
     environment:
       name: development
