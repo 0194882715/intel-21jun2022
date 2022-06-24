@@ -83,7 +83,7 @@ jobs:
           pwd
           ls -la
           sed -i "s|REPLACEAPPLICATIONENVIRONMENT|$GITHUB_ENV|g" ./myapp/version.html
-          sed -i "s|REPLACEAPPBUILDNO/$$GITHUB_RUN_NUMBER|g" ./myapp/version.html
+          sed -i "s|REPLACEAPPBUILDNO/$GITHUB_RUN_NUMBER|g" ./myapp/version.html
           cat myapp/version.html
 
       - name: Upload the Artifact
