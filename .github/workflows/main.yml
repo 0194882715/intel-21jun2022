@@ -63,6 +63,9 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+env: 
+  myapp_ver: "1.0.0"
+
 jobs:
 
   build:
@@ -79,7 +82,7 @@ jobs:
         run: |
           pwd
           ls -la
-          sed -i 's/REPLACEAPPLICATIONENVIRONMENT/${{env.GITHUB_ENV}}/g' ./myapp/version.html
+          sed -i "s/REPLACEAPPLICATIONENVIRONMENT/${myapp_ver}/g" ./myapp/version.html
           cat myapp/version.html
 
       - name: Upload the Artifact
